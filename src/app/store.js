@@ -1,8 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import postsReducer from "../features/post/postsSlice";
+import commentsRducer from "../features/comments/commentsSlice";
+import categoreisReducer from "../features/categoris/categoriesSlice";
+import searchTermReducer from "../features/searchTerm/searchTermSlice";
 
-export const store = configureStore({
+export default configureStore({
   reducer: {
-    counter: counterReducer,
+    categories: categoreisReducer,
+    posts: postsReducer,
+    comments: commentsRducer,
+    searchTerm: searchTermReducer,
   },
 });
