@@ -31,4 +31,4 @@ The app is tested using Enzyme/jest.
 
 ## Lighthouse Score
 
-![lighthouse-score](./public/project-img.png)
+![lighthouse-score](/public/images/lighthouse-score.png)
