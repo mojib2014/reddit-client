@@ -1,5 +1,4 @@
 import axios from "axios";
-import { toast } from "react-toastify";
 
 axios.defaults.baseURL = "https://www.reddit.com";
 
@@ -10,7 +9,6 @@ axios.interceptors.response.use(null, (err) => {
   if (expectedError) return Promise.reject(err);
   else {
     console.log("Logging the error: ", err.response.data.message);
-    toast.error(err.message);
   }
 });
 
