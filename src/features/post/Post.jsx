@@ -1,19 +1,43 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import moment from "moment";
 import {
   TiArrowUpOutline,
   TiArrowDownOutline,
   TiMessage,
 } from "react-icons/ti";
 import { FaUser } from "react-icons/fa";
-import moment from "moment";
-import shortenNumber from "../../utils/shortenNumber";
 import Button from "../../components/button/Button";
-import Card from "../../components/card/Card";
 import Avatar from "../../components/avatar/Avatar";
-import Comments from "../comments/Comments";
+import Loadding from "../../components/loadding/Loadding";
+import Error from "../../components/error/Error";
+import shortenNumber from "../../utils/shortenNumber";
+import Card from "../../components/card/Card";
+import Comment from "../comments/Comment";
+import { hasError, isLoadding } from "../comments/commentsSlice";
 import "./post.css";
 
 const Post = ({ post, onToggleComments, comments }) => {
+  const error = useSelector(hasError);
+  const loadding = useSelector(isLoadding);
+
+  const renderComments = () => {
+    if (error) return <Error message="failed to load comments" />;
+
+    if (loadding) return <Loadding className="loadding" />;
+
+    if (comments.every((comment) => post.id === comment.postId)) {
+      return (
+        <div>
+          {comments.map((comment) => (
+            <Comment key={comment.id} comment={comment} />
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <article key={post.id}>
       <Card>
@@ -30,7 +54,13 @@ const Post = ({ post, onToggleComments, comments }) => {
           <div className="post-container">
             <h3 className="post-title">{post.title}</h3>
             <div className="post-img-container">
-              <img src={post.url} alt={post.name} className="post-image" />
+              <img
+                src={post.url}
+                alt={post.author}
+                className="post-image"
+                loading="lazy"
+                style={{ width: 600, height: 500 }}
+              />
             </div>
             <div className="post-details">
               <Avatar name={post.author}>
@@ -39,9 +69,11 @@ const Post = ({ post, onToggleComments, comments }) => {
               <span>{moment.unix(post.created_utc).fromNow()}</span>
               <span className="post-comments-container">
                 <Button
-                  className="icon-action-button"
+                  className={`icon-action-button ${
+                    comments.length ? "show" : "hide"
+                  }`}
                   ariaLabel="Show comments"
-                  onClick={() => onToggleComments(post.permalink)}
+                  onClick={() => onToggleComments(post)}
                 >
                   <TiMessage className="icon-action" />
                 </Button>
@@ -49,7 +81,7 @@ const Post = ({ post, onToggleComments, comments }) => {
                 {shortenNumber(post.num_comments, 1)}
               </span>
             </div>
-            <Comments items={comments} />
+            {renderComments()}
           </div>
         </div>
       </Card>

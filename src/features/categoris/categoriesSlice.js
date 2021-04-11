@@ -5,8 +5,18 @@ import getCategories from "../../services/categoriesService";
 export const loadCategories = createAsyncThunk(
   "categories/loadCategories",
   async () => {
-    const categoreis = await getCategories();
-    return categoreis;
+    try {
+      const categories = await getCategories();
+      return categories.map((category) => ({
+        id: category.id,
+        url: category.url,
+        display_name: category.display_name,
+        primary_color: category.primary_color,
+        icon_img: category.icon_img,
+      }));
+    } catch (error) {
+      return error;
+    }
   },
 );
 
@@ -14,7 +24,7 @@ export const loadCategories = createAsyncThunk(
 const categoriesSlice = createSlice({
   name: "categories",
   initialState: {
-    categoreis: [],
+    categories: [],
     isLoadding: false,
     error: false,
   },
@@ -24,20 +34,20 @@ const categoriesSlice = createSlice({
         state.isLoadding = true;
         state.error = false;
       })
-      .addCase(loadCategories.fulfilled, (state, action) => {
+      .addCase(loadCategories.fulfilled, (state, { payload }) => {
         state.isLoadding = false;
         state.error = false;
-        state.categoreis = action.payload;
+        state.categories = payload;
       })
       .addCase(loadCategories.rejected, (state) => {
         state.isLoadding = false;
         state.error = true;
-        state.categoreis = [];
+        state.categories = [];
       });
   },
 });
 
-export const selectCategories = (state) => state.categoreis.categoreis;
-export const isCategoriesLoading = (state) => state.categoreis.isLoading;
-export const categoreisError = (state) => state.categoreis.error;
 export default categoriesSlice.reducer;
+export const selectCategories = (state) => state.categories.categories;
+export const isLoadding = (state) => state.isLoadding;
+export const hasError = (state) => state.error;

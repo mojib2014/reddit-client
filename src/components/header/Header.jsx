@@ -1,8 +1,8 @@
 import React from "react";
 import { HiOutlineSearch } from "react-icons/hi";
 import { FaReddit } from "react-icons/fa";
-import SearchTerm from "../../features/searchTerm/SearchTerm";
 import "./header.css";
+import SearchTerm from "../../features/searchTerm/SearchTerm";
 
 const Header = () => {
   return (

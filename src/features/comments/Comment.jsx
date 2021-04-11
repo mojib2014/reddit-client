@@ -1,9 +1,9 @@
-import moment from "moment";
 import React from "react";
+import moment from "moment";
 import ReactMarkdown from "react-markdown";
 import { FaUser } from "react-icons/fa";
-import Avatar from "../avatar/Avatar";
 import "./comment.css";
+import Avatar from "../../components/avatar/Avatar";
 
 const Comment = ({ comment }) => {
   return (
@@ -16,7 +16,7 @@ const Comment = ({ comment }) => {
           {moment.unix(comment.created_utc).fromNow()}
         </p>
       </div>
-      <ReactMarkdown source={comment.body} />
+      <ReactMarkdown source={comment.comment} />
     </div>
   );
 };

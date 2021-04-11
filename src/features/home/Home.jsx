@@ -1,41 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Post from "../post/Post";
 import Loadding from "../../components/loadding/Loadding";
-import {
-  loadPosts,
-  selectPosts,
-  isPostsLoading,
-  postsError,
-} from "../post/postsSlice";
+import { selectPosts, isPostsLoading, postsError } from "../post/postsSlice";
 import { selectSearchTerm } from "../searchTerm/searchTermSlice";
-import {
-  loadComments,
-  selectComments,
-  toggleShowComments,
-} from "../comments/commentsSlice";
+import { loadPosts } from "../post/postsSlice";
+import { loadPostComments, selectComments } from "../comments/commentsSlice";
+import Post from "../post/Post";
 
 const Home = () => {
-  const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const posts = useSelector(selectPosts);
   const comments = useSelector(selectComments);
-  const postsLoading = useSelector(isPostsLoading);
-  const postsFailed = useSelector(postsError);
   const searchTerm = useSelector(selectSearchTerm);
+  const loadding = useSelector(isPostsLoading);
+  const error = useSelector(postsError);
 
   useEffect(() => {
     dispatch(loadPosts(searchTerm));
   }, [dispatch, searchTerm]);
 
-  if (postsFailed) return <Loadding className="error" />;
-  if (postsLoading) return <Loadding className="loadding" />;
-
-  const toggleComments = (permalink) => {
-    setShow(!show);
-    dispatch(toggleShowComments(show));
-    if (show) dispatch(loadComments(permalink));
+  const toggleComments = () => {
+    const getComments = (post) => {
+      dispatch(loadPostComments(post));
+    };
+    return getComments;
   };
+
+  if (loadding) return <Loadding className="loadding" />;
+
+  if (error) {
+    return (
+      <div className="error">
+        <h2>Failed to load posts.</h2>
+        <button type="button" onClick={() => dispatch(loadPosts(searchTerm))}>
+          Try again
+        </button>
+      </div>
+    );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <div className="error">
+        <h2>No posts matching "{searchTerm}"</h2>
+        <button type="button" onClick={() => (window.location = "/")}>
+          Go home
+        </button>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -43,7 +56,7 @@ const Home = () => {
         <Post
           key={post.id}
           post={post}
-          onToggleComments={toggleComments}
+          onToggleComments={toggleComments()}
           comments={comments}
         />
       ))}

@@ -9,7 +9,7 @@ axios.interceptors.response.use(null, (err) => {
 
   if (expectedError) return Promise.reject(err);
   else {
-    console.log("Logging the error: ", err);
+    console.log("Logging the error: ", err.response.data.message);
     toast.error(err.message);
   }
 });

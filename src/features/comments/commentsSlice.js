@@ -2,14 +2,21 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchPostComments } from "../../services/commentsService";
 
 // Async thunk action creator
-export const loadComments = createAsyncThunk(
-  "comments/loadComments",
-  async (permalink) => {
+export const loadPostComments = createAsyncThunk(
+  "comments/loadPostComments",
+  async (post) => {
     try {
-      const res = await fetchPostComments(permalink);
-      return res;
-    } catch (error) {
-      console.log("catch block", error.message);
+      const comments = await fetchPostComments(post);
+      return comments.map((comment) => ({
+        id: comment.id,
+        author: comment.author,
+        ups: comment.ups,
+        comment: comment.body,
+        created_utc: comment.created_utc,
+        postId: post.id,
+      }));
+    } catch (err) {
+      console.log(err.response.data.message);
     }
   },
 );
@@ -19,28 +26,22 @@ export const commentsSlice = createSlice({
   name: "comments",
   initialState: {
     comments: [],
-    showComments: false,
-    isLoadding: false,
+    loadding: false,
     error: false,
-  },
-  reducers: {
-    toggleShowComments: (state, action) => {
-      state.showComments = action.payload;
-    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loadComments.pending, (state) => {
-        state.isLoadding = true;
+      .addCase(loadPostComments.pending, (state) => {
+        state.loadding = true;
         state.eError = false;
       })
-      .addCase(loadComments.fulfilled, (state, action) => {
-        state.isLoadding = false;
+      .addCase(loadPostComments.fulfilled, (state, { payload }) => {
+        state.loadding = false;
         state.error = false;
-        state.comments = action.payload;
+        state.comments = payload;
       })
-      .addCase(loadComments.rejected, (state) => {
-        state.isLoadding = false;
+      .addCase(loadPostComments.rejected, (state) => {
+        state.loadding = false;
         state.error = true;
         state.comments = [];
       });
@@ -48,8 +49,6 @@ export const commentsSlice = createSlice({
 });
 
 export const selectComments = (state) => state.comments.comments;
-export const showComments = (state) => state.comments.showComments;
-export const isCommentsLoadding = (state) => state.comments.isLoadding;
-export const commentsError = (state) => state.comments.error;
-export const { toggleShowComments } = commentsSlice.actions;
+export const isLoadding = (state) => state.comments.loadding;
+export const hasError = (state) => state.comments.error;
 export default commentsSlice.reducer;

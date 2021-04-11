@@ -3,8 +3,7 @@
   box-shadow: var(--box-shadow);
   border-radius: var(--radius);
   color: var(--color-text-secondary);
-  margin: auto auto var(--spacing-4) auto;
+  margin: var(--spacing-4) auto;
   padding: var(--spacing-3);
   transition: box-shadow 0.1s ease-in;
-  width: 60%;
 }

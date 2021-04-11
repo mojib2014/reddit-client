@@ -7,16 +7,12 @@ const searchTermSlice = createSlice({
     searchTerm: "/r/pics",
   },
   reducers: {
-    setSearchTerm: (state, action) => {
-      const { payload } = action;
-      state.searchTerm = `/r/${payload}`;
-    },
-    clearSearchTerm: (state) => {
-      state.searchTerm = "";
+    setSearchTerm: (state, { payload }) => {
+      state.searchTerm = payload;
     },
   },
 });
 
 export const selectSearchTerm = (state) => state.searchTerm.searchTerm;
-export const { setSearchTerm, clearSearchTerm } = searchTermSlice.actions;
+export const { setSearchTerm } = searchTermSlice.actions;
 export default searchTermSlice.reducer;

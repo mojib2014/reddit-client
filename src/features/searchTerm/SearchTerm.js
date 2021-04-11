@@ -14,7 +14,7 @@ const SearchTerm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (query === "") return;
-    dispatch(setSearchTerm(query.toLowerCase()));
+    dispatch(setSearchTerm(`r/${query.toLowerCase()}`));
   };
 
   return (
