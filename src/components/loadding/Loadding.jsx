@@ -1,5 +1,5 @@
 import React from "react";
-import loaddingGif from "../../loadding.gif";
+import loaddingGif from "./loadding.gif";
 import "./loadding.css";
 
 const Loadding = ({ className, error }) => {

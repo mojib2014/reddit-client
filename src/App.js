@@ -1,13 +1,15 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import "./App.css";
-import Header from "./components/header/Header";
-import Categories from "./features/categoris/Categories";
-import Home from "./features/home/Home";
-import PopularSubreddits from "./features/popularSubreddits/PopularSubreddits";
+const Header = lazy(() => import("./components/header/Header"));
+const Categories = lazy(() => import("./features/categoris/Categories"));
+const Home = lazy(() => import("./features/home/Home"));
+const PopularSubreddits = lazy(() =>
+  import("./features/popularSubreddits/PopularSubreddits"),
+);
 
 function App() {
   return (
-    <>
+    <Suspense fallback="">
       <Header />
       <aside className="aside-left">
         <PopularSubreddits />
@@ -18,7 +20,7 @@ function App() {
       <aside className="aside-right">
         <Categories />
       </aside>
-    </>
+    </Suspense>
   );
 }
 

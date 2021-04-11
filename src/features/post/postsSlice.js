@@ -5,7 +5,6 @@ import { fetchPosts } from "../../services/postsService";
 export const loadPosts = createAsyncThunk("posts/loadPosts", async (query) => {
   try {
     const posts = await fetchPosts(query);
-
     return posts.map((post) => ({
       id: post.id,
       title: post.title,

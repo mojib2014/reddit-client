@@ -22,7 +22,7 @@ const Post = ({ post, onToggleComments, comments }) => {
   const loadding = useSelector(isLoadding);
 
   const renderComments = () => {
-    if (error) return <Error message="failed to load comments" />;
+    if (error) return <Error message="Failed to load comments" />;
 
     if (loadding) return <Loadding className="loadding" />;
 
@@ -59,7 +59,7 @@ const Post = ({ post, onToggleComments, comments }) => {
                 alt={post.author}
                 className="post-image"
                 loading="lazy"
-                style={{ width: 600, height: 500 }}
+                style={{ width: 500, height: "auto" }}
               />
             </div>
             <div className="post-details">

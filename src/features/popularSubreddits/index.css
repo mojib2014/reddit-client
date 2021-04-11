@@ -46,11 +46,10 @@
   margin-right: var(--spacing-1);
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1300px) {
   .aside-left {
     grid-column: 1;
     grid-row: 2/3;
     margin: auto;
-    min-width: 90%;
   }
 }

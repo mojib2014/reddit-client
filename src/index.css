@@ -19,7 +19,7 @@ body {
 main {
   padding: var(--spacing-1);
   grid-column: 2/3;
-  width: 90%;
+  width: auto;
   max-width: 1600px;
   margin: auto;
 }
@@ -36,7 +36,7 @@ header {
   align-content: center;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1300px) {
   #root {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto auto;
