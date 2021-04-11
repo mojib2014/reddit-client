@@ -1,22 +1,12 @@
 {
-  "short_name": "RC",
+  "short_name": "Reddit Client",
   "name": "Reddit Client",
   "icons": [
     {
-      "src": "/images/reddit-icon512.png",
+      "src": "/images/reddit-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
-    },
-    {
-      "src": "/public/images/reddit-icon512.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "/public/images/reddit-icon512.png",
-      "type": "image/png",
-      "sizes": "512x512"
     }
   ],
   "start_url": ".",
