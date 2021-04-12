@@ -5,11 +5,13 @@ import {
   loadCategories,
   isLoadding,
   hasError,
+  errorMessage,
 } from "./categoriesSlice";
 import { selectSearchTerm, setSearchTerm } from "../searchTerm/searchTermSlice";
 import Loadding from "../../components/loadding/Loadding";
 import Button from "../../components/button/Button";
 import Card from "../../components/card/Card";
+import Error from "../../components/error/Error";
 import "./categories.css";
 
 export default function Categories() {
@@ -18,14 +20,15 @@ export default function Categories() {
   const searchTerm = useSelector(selectSearchTerm);
   const loadding = useSelector(isLoadding);
   const error = useSelector(hasError);
+  const errMessage = useSelector(errorMessage);
 
   useEffect(() => {
     dispatch(loadCategories());
   }, [dispatch]);
 
-  if (error) return <Loadding className="error" />;
-
   if (loadding) return <Loadding className="loadding" />;
+
+  if (error) return <Error title="Subreddits" error={errMessage} />;
 
   return (
     <Card className={"category-card"}>

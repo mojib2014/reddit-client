@@ -4,7 +4,7 @@ import { fetchPostComments } from "../../services/commentsService";
 // Async thunk action creator
 export const loadPostComments = createAsyncThunk(
   "comments/loadPostComments",
-  async (post) => {
+  async (post, { rejectWithValue }) => {
     try {
       const comments = await fetchPostComments(post);
       return comments.map((comment) => ({
@@ -16,7 +16,7 @@ export const loadPostComments = createAsyncThunk(
         postId: post.id,
       }));
     } catch (err) {
-      console.log(err.response.data.message);
+      return rejectWithValue(err.response.data);
     }
   },
 );
@@ -28,6 +28,7 @@ export const commentsSlice = createSlice({
     comments: [],
     loadding: false,
     error: false,
+    errorMessage: "",
   },
   extraReducers: (builder) => {
     builder
@@ -40,15 +41,18 @@ export const commentsSlice = createSlice({
         state.error = false;
         state.comments = payload;
       })
-      .addCase(loadPostComments.rejected, (state) => {
+      .addCase(loadPostComments.rejected, (state, action) => {
         state.loadding = false;
         state.error = true;
+        state.errorMessage = action.payload;
         state.comments = [];
       });
   },
 });
 
+export default commentsSlice.reducer;
+
 export const selectComments = (state) => state.comments.comments;
 export const isLoadding = (state) => state.comments.loadding;
-export const hasError = (state) => state.comments.error;
-export default commentsSlice.reducer;
+export const error = (state) => state.comments.error;
+export const errorMessage = (state) => state.comments.errorMessage;

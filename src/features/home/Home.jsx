@@ -1,11 +1,18 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loadding from "../../components/loadding/Loadding";
-import { selectPosts, isPostsLoading, postsError } from "../post/postsSlice";
+import {
+  selectPosts,
+  isPostsLoading,
+  error,
+  errMessage,
+} from "../post/postsSlice";
 import { selectSearchTerm } from "../searchTerm/searchTermSlice";
 import { loadPosts } from "../post/postsSlice";
 import { loadPostComments, selectComments } from "../comments/commentsSlice";
 import Post from "../post/Post";
+import "./home.css";
+import Error from "../../components/error/Error";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -13,7 +20,8 @@ const Home = () => {
   const comments = useSelector(selectComments);
   const searchTerm = useSelector(selectSearchTerm);
   const loadding = useSelector(isPostsLoading);
-  const error = useSelector(postsError);
+  const hasError = useSelector(error);
+  const errorMessage = useSelector(errMessage);
 
   useEffect(() => {
     dispatch(loadPosts(searchTerm));
@@ -28,18 +36,17 @@ const Home = () => {
 
   if (loadding) return <Loadding className="loadding" />;
 
-  if (error) {
+  if (hasError) {
     return (
-      <div className="error">
-        <h2>Failed to load posts.</h2>
+      <Error title="Posts" error={errorMessage}>
         <button type="button" onClick={() => dispatch(loadPosts(searchTerm))}>
           Try again
         </button>
-      </div>
+      </Error>
     );
   }
 
-  if (posts.length === 0) {
+  if (!posts.length) {
     return (
       <div className="error">
         <h2>No posts matching "{searchTerm}"</h2>

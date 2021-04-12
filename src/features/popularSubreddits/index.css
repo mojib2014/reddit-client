@@ -1,6 +1,7 @@
 .aside-left {
   grid-column: 1/2;
   justify-self: end;
+  padding: var(--spacing-1);
 }
 
 .popular-card h2 {
@@ -46,10 +47,11 @@
   margin-right: var(--spacing-1);
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1100px) {
   .aside-left {
     grid-column: 1;
     grid-row: 2/3;
-    margin: auto;
+    justify-self: center;
+    width: 90%;
   }
 }

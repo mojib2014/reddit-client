@@ -4,7 +4,7 @@ import getPopular from "../../services/popularSubredditsService";
 // Async thunk action creator
 export const getPopularSubreddits = createAsyncThunk(
   "popularSubreddits/loadPopular",
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
       const { data } = await getPopular();
       const res = data.children.map(({ data }) => ({
@@ -19,7 +19,7 @@ export const getPopularSubreddits = createAsyncThunk(
       }));
       return res;
     } catch (error) {
-      return error;
+      return rejectWithValue(error.response.data);
     }
   },
 );
@@ -29,23 +29,25 @@ export const popularSubredditsSlice = createSlice({
   name: "popularSubreddits",
   initialState: {
     popularSubreddits: [],
-    isLoadding: false,
-    hasError: false,
+    loadding: false,
+    error: false,
+    errorMessage: "",
   },
   extraReducers: (builder) => {
     builder
       .addCase(getPopularSubreddits.pending, (state) => {
-        state.isLoadding = true;
-        state.hasError = false;
+        state.loadding = true;
+        state.error = false;
       })
       .addCase(getPopularSubreddits.fulfilled, (state, { payload }) => {
-        state.isLoadding = false;
-        state.hasError = false;
+        state.loadding = false;
+        state.error = false;
         state.popularSubreddits = payload;
       })
-      .addCase(getPopularSubreddits.rejected, (state) => {
-        state.isLoadding = false;
-        state.hasError = true;
+      .addCase(getPopularSubreddits.rejected, (state, action) => {
+        state.loadding = false;
+        state.error = true;
+        state.errorMessage = action.payload;
         state.popularSubreddits = [];
       });
   },
@@ -55,5 +57,6 @@ export default popularSubredditsSlice.reducer;
 
 export const selectPopularSubreddits = (state) =>
   state.popularSubreddits.popularSubreddits;
-export const loadding = (state) => state.popularSubreddits.isLoadding;
-export const error = (state) => state.popularSubreddits.hasError;
+export const loadding = (state) => state.popularSubreddits.loadding;
+export const error = (state) => state.popularSubreddits.error;
+export const errorMessage = (state) => state.popularSubreddits.errorMessage;

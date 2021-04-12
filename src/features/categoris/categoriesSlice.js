@@ -4,7 +4,7 @@ import getCategories from "../../services/categoriesService";
 // Async thun action creator
 export const loadCategories = createAsyncThunk(
   "categories/loadCategories",
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
       const categories = await getCategories();
       return categories.map((category) => ({
@@ -15,7 +15,7 @@ export const loadCategories = createAsyncThunk(
         icon_img: category.icon_img,
       }));
     } catch (error) {
-      return error;
+      return rejectWithValue(error.response.data);
     }
   },
 );
@@ -27,6 +27,7 @@ const categoriesSlice = createSlice({
     categories: [],
     isLoadding: false,
     error: false,
+    errorMessage: "",
   },
   extraReducers: (builder) => {
     builder
@@ -39,9 +40,10 @@ const categoriesSlice = createSlice({
         state.error = false;
         state.categories = payload;
       })
-      .addCase(loadCategories.rejected, (state) => {
+      .addCase(loadCategories.rejected, (state, action) => {
         state.isLoadding = false;
         state.error = true;
+        state.errorMessage = action.payload;
         state.categories = [];
       });
   },
@@ -49,5 +51,6 @@ const categoriesSlice = createSlice({
 
 export default categoriesSlice.reducer;
 export const selectCategories = (state) => state.categories.categories;
-export const isLoadding = (state) => state.isLoadding;
-export const hasError = (state) => state.error;
+export const isLoadding = (state) => state.categories.isLoadding;
+export const hasError = (state) => state.categories.error;
+export const errorMessage = (state) => state.categories.errorMessage;

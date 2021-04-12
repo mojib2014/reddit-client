@@ -9,6 +9,7 @@ import {
   selectPopularSubreddits,
   error,
   loadding,
+  errorMessage,
 } from "./popularSubredditsSlice";
 import { selectSearchTerm, setSearchTerm } from "../searchTerm/searchTermSlice";
 import "./index.css";
@@ -18,13 +19,15 @@ export default function PopularSubreddits() {
   const popularSubreddits = useSelector(selectPopularSubreddits);
   const isLoadding = useSelector(loadding);
   const hasError = useSelector(error);
+  const errMessage = useSelector(errorMessage);
   const searchTerm = useSelector(selectSearchTerm);
 
   useEffect(() => {
     dispatch(getPopularSubreddits());
   }, [dispatch]);
 
-  if (hasError) return <Error className="error" />;
+  if (hasError) return <Error title="Popular Subreddits" error={errMessage} />;
+
   if (isLoadding) return <Loadding className="loadding" />;
 
   return (

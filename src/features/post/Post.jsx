@@ -14,15 +14,16 @@ import Error from "../../components/error/Error";
 import shortenNumber from "../../utils/shortenNumber";
 import Card from "../../components/card/Card";
 import Comment from "../comments/Comment";
-import { hasError, isLoadding } from "../comments/commentsSlice";
+import { error, isLoadding, errorMessage } from "../comments/commentsSlice";
 import "./post.css";
 
 const Post = ({ post, onToggleComments, comments }) => {
-  const error = useSelector(hasError);
   const loadding = useSelector(isLoadding);
+  const hasError = useSelector(error);
+  const errMessage = useSelector(errorMessage);
 
   const renderComments = () => {
-    if (error) return <Error message="Failed to load comments" />;
+    if (hasError) return <Error title="Comments" error={errMessage} />;
 
     if (loadding) return <Loadding className="loadding" />;
 
