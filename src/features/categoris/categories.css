@@ -1,10 +1,5 @@
 .aside-right {
-  grid-column: 3/4;
-  justify-self: start;
-  padding: var(--spacing-1);
-}
-.category-card {
-  padding-right: var(--spacing-2);
+  grid-area: aside-right;
 }
 
 .category-card h2 {
@@ -50,11 +45,16 @@
   margin-right: var(--spacing-1);
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
+  .aside-right {
+    grid-column: 2;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 940px) {
   .aside-right {
     grid-column: 1;
-    grid-row: 4/5;
-    justify-self: center;
-    width: 90%;
+    grid-row: 3;
   }
 }

@@ -7,15 +7,17 @@ import SearchTerm from "../../features/searchTerm/SearchTerm";
 const Header = () => {
   return (
     <header>
-      <div className="logo">
-        <FaReddit className="logo-icon" />
-        <p>
-          Reddit<span>Minimal</span>
-        </p>
+      <div className="content">
+        <div className="logo">
+          <FaReddit className="logo-icon" />
+          <p>
+            Reddit<span>Minimal</span>
+          </p>
+        </div>
+        <SearchTerm>
+          <HiOutlineSearch />
+        </SearchTerm>
       </div>
-      <SearchTerm>
-        <HiOutlineSearch />
-      </SearchTerm>
     </header>
   );
 };

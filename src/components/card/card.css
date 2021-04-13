@@ -1,9 +1,18 @@
 .card {
+  border: 1px solid #e0e0de;
+  border-radius: var(--radius);
   background-color: var(--color-foreground);
   box-shadow: var(--box-shadow);
   border-radius: var(--radius);
   color: var(--color-text-secondary);
-  margin: var(--spacing-4);
-  padding: var(--spacing-3);
   transition: box-shadow 0.1s ease-in;
+}
+
+.card h2 {
+  padding: var(--spacing-1);
+}
+
+.card li {
+  border-top: 1px solid #ebebeb;
+  margin: 8px 0;
 }

@@ -11,15 +11,17 @@ function App() {
   return (
     <Suspense fallback="">
       <Header />
-      <aside className="aside-left">
-        <PopularSubreddits />
-      </aside>
-      <main>
-        <Home />
-      </main>
-      <aside className="aside-right">
-        <Categories />
-      </aside>
+      <div className="content main-content">
+        <aside className="aside-left">
+          <PopularSubreddits />
+        </aside>
+        <main>
+          <Home />
+        </main>
+        <aside className="aside-right">
+          <Categories />
+        </aside>
+      </div>
     </Suspense>
   );
 }
